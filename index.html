@@ -1,0 +1,1992 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>和弦進行音準練習｜TCMC</title>
+<style>
+  :root{
+    --charcoal:#2E3A3F; --charcoal-2:#232C30; --charcoal-3:#20292D;
+    --teal:#0B6E6E; --teal-bright:#2FBFAA; --teal-soft:#8FD9C8;
+    --gold:#E8A33D; --green:#33D17A; --amber:#F2B84B; --paper:#EAF2F1;
+    --muted:#8FA3A0; --danger:#E2685A;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:radial-gradient(1200px 600px at 20% -10%, #33424A 0%, var(--charcoal) 55%, #232C30 100%);
+    color:var(--paper);
+    font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",system-ui,-apple-system,sans-serif;
+    min-height:100vh;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:28px 18px 60px;}
+  header{margin-bottom:22px;}
+  .eyebrow{font-size:12px;letter-spacing:.14em;color:var(--teal-bright);font-weight:700;text-transform:uppercase;margin-bottom:6px;}
+  h1{font-family:"Noto Serif TC",serif;font-size:clamp(22px,4vw,30px);margin:0 0 6px;font-weight:700;color:#fff;}
+  .sub{color:var(--muted);font-size:13.5px;line-height:1.6;max-width:640px;}
+  .header-top{display:flex;justify-content:space-between;align-items:center;gap:10px;}
+  .lang-btn{
+    padding:6px 14px;border-radius:20px;border:1.5px solid rgba(234,242,241,0.2);
+    background:rgba(255,255,255,0.03);color:var(--paper);font-size:12.5px;font-weight:700;
+    cursor:pointer;letter-spacing:.05em;transition:all .15s ease;flex:none;
+  }
+  .lang-btn:hover{border-color:var(--teal-bright);color:#fff;}
+  .howto ol{margin:0;padding-left:20px;font-size:13.5px;line-height:1.75;color:var(--paper);}
+  .howto li{margin-bottom:3px;}
+  .howto .tip{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.7;}
+  .note{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:10px;}
+  .note b{color:var(--paper);}
+  footer{margin-top:26px;font-size:12px;color:var(--muted);text-align:center;line-height:1.8;}
+
+  .card{
+    background:linear-gradient(180deg, rgba(255,255,255,0.035), rgba(255,255,255,0.015));
+    border:1px solid rgba(234,242,241,0.09);border-radius:14px;padding:18px 20px;margin-bottom:16px;
+  }
+  .card h2{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 12px;font-weight:700;}
+
+  .btn{padding:12px 20px;border-radius:10px;border:none;font-size:14.5px;font-weight:700;cursor:pointer;transition:transform .1s ease, opacity .15s ease;}
+  .btn:active{transform:scale(0.97);}
+  .btn-primary{background:var(--teal-bright);color:#0d1f1d;}
+  .btn-stop{background:var(--danger);color:#2b0d09;}
+  .btn-ghost{background:rgba(255,255,255,0.06);color:var(--paper);border:1px solid rgba(234,242,241,0.18);}
+  .btn-ghost.on{background:rgba(232,163,61,0.22);border-color:var(--gold);color:#fff;}
+  .btn:disabled{opacity:.35;cursor:not-allowed;}
+  .btn-back{
+    display:inline-flex;align-items:center;gap:4px;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(234,242,241,0.18);
+    color:var(--paper);font-size:13px;font-weight:600;
+    cursor:pointer;padding:7px 14px;border-radius:8px;
+    margin-bottom:14px;margin-right:10px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .btn-back:hover{border-color:var(--teal-bright);color:#fff;}
+  .btn-back:hover{color:var(--teal-bright);}
+  .btn-sm{padding:7px 14px;font-size:13px;border-radius:8px;}
+
+  .voice-toggle-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+  .voice-toggle{opacity:.55;}
+  .voice-toggle.on{opacity:1;background:rgba(47,191,170,0.16);border-color:var(--teal-bright);}
+  .voice-toggle.is-target{border-color:var(--gold)!important;}
+  .voice-toggle.is-target.on{background:rgba(232,163,61,0.2);box-shadow:0 0 0 1.5px var(--gold);}
+  .config-table{width:100%;border-collapse:collapse;font-size:13px;}
+  .config-table th,.config-table td{padding:9px 10px;text-align:center;border:1px solid rgba(234,242,241,0.12);white-space:nowrap;}
+  .config-table thead th{color:var(--teal-bright);font-weight:700;background:rgba(255,255,255,0.03);}
+  .config-table tbody th{color:var(--paper);font-weight:800;background:rgba(255,255,255,0.02);}
+  .config-table td.is-target-col{background:rgba(232,163,61,0.10);}
+  .config-table td{position:relative;}
+  .config-table .note-sub{display:block;font-size:10.5px;color:var(--muted);margin-top:1px;}
+  .config-table .tone-degree{position:absolute;top:2px;right:4px;font-size:9px;font-weight:700;color:var(--teal-bright);line-height:1.35;opacity:.85;text-align:right;}
+  .config-table .tone-et{display:block;font-size:8px;font-weight:600;color:var(--amber);opacity:.9;}
+  .config-table .tappable-cell{cursor:pointer;transition:background .1s ease;touch-action:manipulation;}
+  .config-table .tappable-cell:active{background:rgba(47,191,170,0.28)!important;}
+  .config-table .tappable-cell.cell-flash{background:var(--teal-bright)!important;color:#0d1f1d!important;}
+  .config-table .tappable-cell.cell-flash .tone-degree{color:#0d1f1d!important;}
+  .config-table .tappable-cell.cell-flash .tone-et{color:#0d1f1d!important;}
+  .config-table .tappable-cell.cell-flash .note-sub{color:#0d1f1d!important;}
+  .config-table .tappable-header{cursor:pointer;transition:background .1s ease;touch-action:manipulation;}
+  .config-table .tappable-header:active{background:rgba(47,191,170,0.28)!important;}
+  .config-table .tappable-header.cell-flash{background:var(--teal-bright)!important;color:#0d1f1d!important;}
+
+  .prog-list{display:flex;flex-direction:column;gap:10px;}
+  .prog-item{
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    background:rgba(255,255,255,0.03);border:1.5px solid rgba(234,242,241,0.14);
+    border-radius:10px;padding:14px 16px;cursor:pointer;transition:all .12s ease;
+  }
+  .prog-item:hover{border-color:var(--teal-bright);background:rgba(47,191,170,0.06);}
+  .prog-item .name{font-weight:700;font-size:15px;color:#fff;}
+  .prog-item .romans{color:var(--muted);font-size:12.5px;margin-top:2px;}
+
+  .key-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  @media (max-width:520px){ .key-grid{grid-template-columns:repeat(3,1fr);} }
+  .key-btn{
+    padding:16px 8px;border-radius:10px;border:1.5px solid rgba(234,242,241,0.16);
+    background:rgba(255,255,255,0.03);color:var(--paper);font-size:15px;font-weight:700;cursor:pointer;
+  }
+  .key-btn.available:hover{border-color:var(--teal-bright);background:rgba(47,191,170,0.1);}
+  .key-btn.unavailable{opacity:.28;cursor:not-allowed;color:var(--muted);}
+  .key-btn .margin-note{display:block;font-size:10px;font-weight:500;color:var(--muted);margin-top:3px;}
+
+  .voice-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  @media (max-width:520px){ .voice-grid{grid-template-columns:repeat(2,1fr);} }
+  .voice-btn{padding:18px 10px;border-radius:10px;border:1.5px solid rgba(234,242,241,0.16);background:rgba(255,255,255,0.03);color:var(--paper);font-size:16px;font-weight:800;cursor:pointer;}
+  .voice-btn:hover{border-color:var(--teal-bright);background:rgba(47,191,170,0.1);}
+  .voice-btn .range{display:block;font-size:11px;font-weight:500;color:var(--muted);margin-top:4px;}
+
+  .progress-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+  .current-chord-big{font-size:44px;font-weight:800;color:var(--gold);line-height:1.1;margin-bottom:4px;font-family:"Noto Serif TC",serif;}
+  .current-chord-big .of{font-size:14px;color:var(--muted);font-weight:600;margin-left:10px;}
+  .chord-pill{
+    flex:1;min-width:56px;text-align:center;padding:10px 6px;border-radius:8px;
+    background:rgba(255,255,255,0.04);border:1.5px solid rgba(234,242,241,0.12);
+    color:var(--muted);font-size:13px;font-weight:700;transition:all .15s ease;
+  }
+  .chord-pill.current{background:rgba(232,163,61,0.22);border-color:var(--gold);color:#fff;box-shadow:0 0 0 1.5px var(--gold);}
+  .chord-pill.done{opacity:.5;}
+
+  .tempo-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
+  .tempo-row label{font-size:13px;color:var(--muted);font-weight:700;}
+  .tempo-row input[type=range]{flex:1;min-width:140px;accent-color:var(--teal-bright);}
+  .tempo-val{font-size:14px;font-weight:800;color:#fff;min-width:70px;}
+
+  .transport{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:6px;}
+  .status-line{margin-left:auto;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px;}
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--muted);flex:none;}
+  .dot.ok{background:var(--green);box-shadow:0 0 8px var(--green);}
+  .dot.err{background:var(--danger);}
+  .seq-status{font-size:13.5px;color:var(--paper);background:rgba(255,255,255,0.04);border-radius:8px;padding:8px 12px;margin-top:8px;border-left:3px solid var(--teal-bright);}
+
+  .readout{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;}
+  .readout .item{font-size:12.5px;color:var(--muted);}
+  .readout .item b{display:block;font-size:19px;color:#fff;font-weight:700;margin-top:1px;}
+  .readout .item b.tune-ok{color:var(--green);}
+  .readout .item b.tune-high,.readout .item b.tune-low{color:var(--amber);}
+  canvas{width:100%;height:280px;display:block;border-radius:10px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div class="header-top">
+      <div class="eyebrow" id="txtEyebrow">TCMC · Harmony Ears</div>
+      <button class="lang-btn" id="btnLang" onclick="toggleLang()">EN</button>
+    </div>
+    <h1 id="txtH1">和弦進行音準練習</h1>
+    <div class="sub" id="txtSub">選一條和弦進行，選調，選你要唱的聲部，跟著節奏一路唱過整條和弦進行。</div>
+  </header>
+
+  <!-- SCREEN 1: progression select -->
+  <div id="screenProg" class="screen">
+    <div class="card howto">
+      <h2 id="txtHowtoTitle">使用方式</h2>
+      <ol id="howtoList"></ol>
+      <div class="tip" id="txtHowtoTip"></div>
+    </div>
+    <div class="card">
+      <h2 id="txtProgHeader">選擇和弦進行</h2>
+      <div class="prog-list" id="progList"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 2: key select -->
+  <div id="screenKey" class="screen" style="display:none;">
+    <button class="btn-back" id="btnBackProg" onclick="goToScreen('screenProg')">← 換一條和弦進行</button>
+    <div class="card">
+      <h2 id="keyHeader">選擇調性</h2>
+      <div class="key-grid" id="keyGrid"></div>
+    </div>
+  </div>
+
+  <!-- SCREEN 4: practice -->
+  <div id="screenPractice" class="screen" style="display:none;">
+    <button class="btn-back" id="btnBackKeyFromPractice" onclick="goToScreen('screenKey')">← 換調</button>
+    <button class="btn-back" id="btnChangeProg" onclick="goToScreen('screenProg')">🔀 換和弦進行</button>
+    <div class="card">
+      <h2 id="practiceHeader">和弦進行進度</h2>
+      <div class="current-chord-big" id="currentChordBig">—</div>
+      <div class="progress-row" id="progressRow"></div>
+      <div class="voice-toggle-row" id="targetSwitchRow"></div>
+      <div class="voice-toggle-row" id="voiceToggleRow"></div>
+      <div class="voice-toggle-row">
+        <button type="button" id="btnPlayChord" class="btn btn-ghost btn-sm voice-toggle" onclick="toggleWholeChord()">🔊 整個和弦</button>
+      </div>
+      <div class="tempo-row">
+        <label id="txtTempo">速度</label>
+        <input type="range" id="tempoSlider" min="40" max="160" value="70" oninput="onTempoChange()">
+        <span class="tempo-val" id="tempoVal">70 BPM</span>
+        <button type="button" id="btnMetronome" class="btn btn-ghost btn-sm voice-toggle on" onclick="toggleMetronome()">🔔 節拍器</button>
+      </div>
+      <div class="transport">
+        <button class="btn btn-primary" id="btnStart" onclick="startPractice()">▶ 開始</button>
+        <button class="btn btn-stop" id="btnStop" onclick="stopAll()" disabled>■ 停止</button>
+        <button type="button" id="btnLoop" class="btn btn-ghost btn-sm voice-toggle" onclick="toggleLoop()">🔁 重複</button>
+        <button class="btn btn-ghost" id="btnMicToggle" onclick="toggleMic()" disabled>🎤 開啟麥克風</button>
+        <div class="status-line">
+          <span class="dot" id="micDot"></span>
+          <span id="micText">麥克風未啟用</span>
+        </div>
+      </div>
+      <div class="seq-status" id="seqStatus">按「開始」播放示範並開始偵測。</div>
+    </div>
+    <div class="card">
+      <button type="button" id="btnToggleConfigTable" class="btn btn-ghost btn-sm" onclick="toggleConfigTable()">📋 顯示全曲配置表</button>
+      <div id="configTableWrap" style="display:none;margin-top:12px;overflow-x:auto;"></div>
+    </div>
+    <div class="card">
+      <canvas id="chart"></canvas>
+      <div class="readout">
+        <div class="item"><span id="txtReadoutHz">目前音高</span><b id="curHz">—</b></div>
+        <div class="item"><span id="txtReadoutCents">與目標偏差</span><b id="curCents">—</b></div>
+        <div class="item"><span id="txtReadoutJudge">判定</span><b id="curJudge">—</b></div>
+      </div>
+      <div class="note" id="txtChartNote"></div>
+    </div>
+  </div>
+
+  <footer>
+    <span id="txtFooter1"></span><br>
+    <span id="txtFooter2">台灣合唱音樂中心製作 · Harmony Ears</span><br>
+    <span style="opacity:.5;"><span id="txtVersionPrefix">App 版本：</span>v1.0</span>
+  </footer>
+</div>
+
+<script>
+/* ====================== Voice ranges (MIDI) ====================== */
+const VOICE_RANGES = { S:[57,81], A:[53,76], T:[45,74], B:[38,64] }; // A3-A5, F3-E5, A2-D5, D2-E4
+const VOICE_ORDER = ['S','A','T','B'];
+const COMFORT_MARGIN_SEMITONES = 2; // a voicing note must sit at least this far inside the voice range
+
+/* ====================== JI model: root = plain ET, other chord tones = pure ratios above that chord's own root ====================== */
+// This is "lock the chord to the root" tuning: the root itself just sits at its normal
+// equal-tempered chromatic position (so root-to-root motion across a progression is plain ET,
+// no comma bookkeeping needed) — only the OTHER notes within a given chord are tuned to
+// exact 5-limit (or, for the 7th, harmonic-7th) ratios above that chord's own root.
+const CHORD_QUALITY_CENTS = {
+  major: { root:0, third:386.31, fifth:701.96, sixth:884.36 }, // sixth = 5/3 just major sixth (currently unused by any built-in voicing, kept available for future use)
+  minor: { root:0, third:315.64, fifth:701.96 },
+  dim:   { root:0, third:315.64, fifth:582.51 },        // 6/5, 7/5 (used by vii°)
+  dom7:  { root:0, third:386.31, fifth:701.96, seventh:968.83 }, // 5/4, 3/2, 7/4 (harmonic 7th)
+  min7:  { root:0, third:315.64, fifth:701.96, seventh:968.83 }, // same 7th interval as dom7, minor third
+};
+const CHROMATIC_SOLFEGE = ['Do','Ra','Re','Me','Mi','Fa','Se','Sol','Le','La','Te','Ti'];
+// movable-do convention: a minor key's tonic is sung "La" (relative-minor labeling), not "Do" —
+// same 12 syllables, just rotated so index0 lands on La instead of Do.
+const MINOR_CHROMATIC_SOLFEGE = ['La','Te','Ti','Do','Ra','Re','Me','Mi','Fa','Se','Sol','Le'];
+// numeral shown in the config-table cells for each chord tone — language-agnostic (works
+// the same in a future English version without translation), unlike "根音/三音/五音".
+const CHORD_TONE_DEGREE = { root:'1', third:'3', fifth:'5', sixth:'6', seventh:'7' };
+
+/* ====================== Progression data ====================== */
+// TONIC_REF_MIDI: MIDI note treated as the tonic (rootSemitone=0), octave=0, for authoring purposes.
+const TONIC_REF_MIDI = 60;
+
+// The 4 chord-voicing "zones" for 1451 (decoded note-for-note from the 12 reference MIDI
+// files): each zone is 3 distinct function/octave patterns applied to I / IV / V
+// (the final I repeats the first). The 4 zones turn out to be the SAME underlying descending
+// voice-leading spiral just entered at a different point — kept as 4 explicit templates here
+// rather than re-deriving the spiral, since these exact values were verified against the source data.
+const PROGRESSIONS = [
+  {
+    id: '1451',
+    label: '1451（I – IV – V – I）',
+    labelEn: '1451 (I – IV – V – I)',
+    chordDefs: [
+      { roman:'I',  rootSemitone:0, quality:'major' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'V',  rootSemitone:7, quality:'major' },
+      { roman:'I',  rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: '6415',
+    label: '6415（vi – IV – I – V）',
+    labelEn: '6415 (vi – IV – I – V)',
+    chordDefs: [
+      { roman:'vi', rootSemitone:9, quality:'minor' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I',  rootSemitone:0, quality:'major' },
+      { roman:'V',  rootSemitone:7, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      low: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: '16251',
+    label: '16251（I – vi – ii – V – I）',
+    labelEn: '16251 (I – vi – ii – V – I)',
+    chordDefs: [
+      { roman:'I',  rootSemitone:0, quality:'major' },
+      { roman:'vi', rootSemitone:9, quality:'minor' },
+      { roman:'ii', rootSemitone:2, quality:'minor' },
+      { roman:'V',  rootSemitone:7, quality:'major' },
+      { roman:'I',  rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-1} },
+      ],
+    }
+  },
+  {
+    id: 'threecycle',
+    label: '三度循環（I – vi – IV – ii – vii° – V – iii – I）',
+    labelEn: 'Cycle of Thirds (I – vi – IV – ii – vii° – V – iii – I)',
+    chordDefs: [
+      { roman:'I',    rootSemitone:0,  quality:'major' },
+      { roman:'vi',   rootSemitone:9,  quality:'minor' },
+      { roman:'IV',   rootSemitone:5,  quality:'major' },
+      { roman:'ii',   rootSemitone:2,  quality:'minor' },
+      { roman:'vii°', rootSemitone:11, quality:'dim' },
+      { roman:'V',    rootSemitone:7,  quality:'major' },
+      { roman:'iii',  rootSemitone:4,  quality:'minor' },
+      { roman:'I',    rootSemitone:0,  quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    // NOTE: unlike 1451/6415/16251 (real ear-tested MIDI data), this progression's voicing is a
+    // Voiced with the same pattern-cycle rule as the other progressions: hold 2 common tones,
+    // move the remaining voices by step.
+    // 3 bass notes needed a +1 octave nudge to stay in range: drop-V, octdrop-IV, octdrop-iii.
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0},  A:{func:'third',oct:0},  T:{func:'root',oct:0},   B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0},  A:{func:'root',oct:0},   T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0},   A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-2}, A:{func:'third',oct:-2}, T:{func:'root',oct:-2},  B:{func:'root',oct:-3} },
+        { S:{func:'root',oct:-1},  A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1},  T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1},  B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-iv-i',
+    label: 'I – IV – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-v-i',
+    label: 'I – V – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'V', rootSemitone:7, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-v-iv-i',
+    label: 'I – V – IV – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'V', rootSemitone:7, quality:'major' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-vi-i',
+    label: 'I – vi – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'vi', rootSemitone:9, quality:'minor' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-iii-iv-i',
+    label: 'I – iii – IV – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'iii', rootSemitone:4, quality:'minor' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-iv-v-i-minor',
+    label: 'i – iv – V – i（小調）',
+    labelEn: 'i – iv – V – i (minor)',
+    chordDefs: [
+      { roman:'i', rootSemitone:0, quality:'minor' },
+      { roman:'iv', rootSemitone:5, quality:'minor' },
+      { roman:'V', rootSemitone:7, quality:'major' },
+      { roman:'i', rootSemitone:0, quality:'minor' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-iv-i-v-i',
+    label: 'I – IV – I – V – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'V', rootSemitone:7, quality:'major' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-vi-vii-i-minor',
+    label: 'i – VI – VII – i（自然小調）',
+    labelEn: 'i – VI – VII – i (natural minor)',
+    chordDefs: [
+      { roman:'i', rootSemitone:0, quality:'minor' },
+      { roman:'VI', rootSemitone:8, quality:'major' },
+      { roman:'VII', rootSemitone:10, quality:'major' },
+      { roman:'i', rootSemitone:0, quality:'minor' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: '1451-v7',
+    label: '1451 V7（I – IV – V7 – I）',
+    labelEn: '1451 V7 (I – IV – V7 – I)',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'V7', rootSemitone:7, quality:'dom7' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'seventh',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-2}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-iv-v7-i-minor',
+    label: 'i – iv – V7 – i（小調）',
+    labelEn: 'i – iv – V7 – i (minor)',
+    chordDefs: [
+      { roman:'i', rootSemitone:0, quality:'minor' },
+      { roman:'iv', rootSemitone:5, quality:'minor' },
+      { roman:'V7', rootSemitone:7, quality:'dom7' },
+      { roman:'i', rootSemitone:0, quality:'minor' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'seventh',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-2}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+    }
+  },
+  {
+    id: 'i-vi7-ii7-v7-i',
+    label: 'I – vi7 – ii7 – V7 – I',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'vi7', rootSemitone:9, quality:'min7' },
+      { roman:'ii7', rootSemitone:2, quality:'min7' },
+      { roman:'V7', rootSemitone:7, quality:'dom7' },
+      { roman:'I', rootSemitone:0, quality:'major' },
+    ],
+    keyZoneMap: { C:'high', Db:'high', D:'high', Eb:'high', E:'high', F:'low', Gb:'low', G:'low', Ab:'drop', A:'drop', Bb:'octdrop', B:'octdrop' },
+    zones: {
+      high: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'seventh',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'seventh',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'seventh',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+      ],
+      low: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'seventh',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      drop: [
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:-1}, A:{func:'seventh',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'seventh',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+      octdrop: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'seventh',oct:-2}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'seventh',oct:-2}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-1} },
+      ],
+    }
+  },
+  {
+    id: 'golden-progression',
+    label: '黃金和弦進行（I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V）',
+    labelEn: 'Golden Progression (I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V)',
+    chordDefs: [
+      { roman:'I', rootSemitone:0, quality:'major' },
+      { roman:'V6', rootSemitone:7, quality:'major' },
+      { roman:'vi', rootSemitone:9, quality:'minor' },
+      { roman:'iii6', rootSemitone:4, quality:'min7' },
+      { roman:'IV', rootSemitone:5, quality:'major' },
+      { roman:'I6', rootSemitone:0, quality:'major' },
+      { roman:'ii', rootSemitone:2, quality:'min7' },
+      { roman:'V', rootSemitone:7, quality:'major' },
+    ],
+    keyZoneMap: { C:'C', Db:'Db', D:'D', Eb:'Eb', E:'E', F:'F', Gb:'Gb', G:'G', Ab:'Ab', A:'A', Bb:'Bb', B:'B' },
+    zones: {
+      C: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'fifth',oct:0}, T:{func:'root',oct:0}, B:{func:'third',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'seventh',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      Db: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'fifth',oct:0}, T:{func:'root',oct:0}, B:{func:'third',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'seventh',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      D: [
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'root',oct:0}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'fifth',oct:0}, T:{func:'root',oct:0}, B:{func:'third',oct:-1} },
+        { S:{func:'fifth',oct:0}, A:{func:'third',oct:0}, T:{func:'seventh',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      Eb: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      E: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      F: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      Gb: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      G: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      Ab: [
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:0}, A:{func:'fifth',oct:-1}, T:{func:'third',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:0}, A:{func:'root',oct:0}, T:{func:'fifth',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+      ],
+      A: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-1} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+      ],
+      Bb: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-3} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-3} },
+      ],
+      B: [
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'root',oct:-1}, B:{func:'root',oct:-2} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-3} },
+        { S:{func:'root',oct:-1}, A:{func:'fifth',oct:-2}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+        { S:{func:'fifth',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'third',oct:-3} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'fifth',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'fifth',oct:-1}, T:{func:'root',oct:-1}, B:{func:'third',oct:-2} },
+        { S:{func:'fifth',oct:-1}, A:{func:'third',oct:-1}, T:{func:'seventh',oct:-2}, B:{func:'root',oct:-2} },
+        { S:{func:'third',oct:-1}, A:{func:'root',oct:-1}, T:{func:'third',oct:-2}, B:{func:'root',oct:-3} },
+      ],
+    }
+  },
+];
+// Resolve a progression + key into a concrete array of {roman,rootSemitone,quality,voicing} chords.
+// Supports two shapes: a fixed prog.chords (unused now, kept in case a future simple progression
+// doesn't need per-key zone switching) or the zone-based chordDefs+zones+keyZoneMap shape above.
+function getResolvedChords(prog, tonicSemitoneOffset){
+  if(prog.chords) return prog.chords;
+  const zoneName = prog.keyZoneMap[KEY_NAMES[tonicSemitoneOffset]];
+  const zoneVoicings = prog.zones[zoneName];
+  return prog.chordDefs.map((def,i)=>({ ...def, voicing: zoneVoicings[i] }));
+}
+
+const KEY_NAMES = ['C','Db','D','Eb','E','F','Gb','G','Ab','A','Bb','B'];
+const NOTE_NAMES = ['C','C#','D','D#','E','F','F#','G','G#','A','A#','B'];
+function noteNameForApproxMidi(approxMidi){
+  const rounded = Math.round(approxMidi);
+  const pc = ((rounded%12)+12)%12;
+  const oct = Math.floor(rounded/12)-1;
+  return NOTE_NAMES[pc]+oct;
+}
+function solfegeForApproxMidi(approxMidi, tonicSemitoneOffset, isMinorKey){
+  const semisFromTonic = Math.round(approxMidi - (TONIC_REF_MIDI+tonicSemitoneOffset));
+  const idx = ((semisFromTonic%12)+12)%12;
+  return (isMinorKey ? MINOR_CHROMATIC_SOLFEGE : CHROMATIC_SOLFEGE)[idx];
+}
+// a progression is "minor key" if its very first chord is the minor tonic 'i' (exact match —
+// distinguishes real minor-key progressions like i-iv-V-i from major-key ones that merely
+// contain a lowercase-roman chord somewhere, e.g. 6415's leading 'vi').
+function isMinorKeyProgression(prog){
+  return !!(prog && prog.chordDefs && prog.chordDefs[0] && prog.chordDefs[0].roman === 'i');
+}
+
+function midiToFreq(midi){ return 440*Math.pow(2,(midi-69)/12); }
+function noteFreqForVoicing(tonicSemitoneOffset, rootSemitone, quality, func, oct){
+  const rootFreq = midiToFreq(TONIC_REF_MIDI + tonicSemitoneOffset + rootSemitone); // root = plain ET
+  const qc = (CHORD_QUALITY_CENTS[quality]||CHORD_QUALITY_CENTS.major)[func];
+  const cents = (qc||0) + oct*1200;
+  return rootFreq * Math.pow(2, cents/1200);
+}
+function midiApproxForVoicing(tonicSemitoneOffset, rootSemitone, quality, func, oct){
+  // approximate ET-equivalent MIDI for range-checking / display purposes only
+  const qc = (CHORD_QUALITY_CENTS[quality]||CHORD_QUALITY_CENTS.major)[func];
+  const cents = (qc||0) + oct*1200;
+  return TONIC_REF_MIDI + tonicSemitoneOffset + rootSemitone + cents/100;
+}
+
+function progressionFitsKey(prog, tonicSemitoneOffset){
+  const chords = getResolvedChords(prog, tonicSemitoneOffset);
+  for(const chord of chords){
+    for(const part of VOICE_ORDER){
+      const vp = chord.voicing[part];
+      if(!vp) continue;
+      const approxMidi = midiApproxForVoicing(tonicSemitoneOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+      const [lo,hi] = VOICE_RANGES[part];
+      if(approxMidi < lo+COMFORT_MARGIN_SEMITONES || approxMidi > hi-COMFORT_MARGIN_SEMITONES) return false;
+    }
+  }
+  return true;
+}
+
+/* ====================== i18n ====================== */
+const LANG_KEY = 'tcmc_chordprog_lang';
+const I18N = {
+  zh: {
+    title:'和弦進行音準練習｜TCMC', eyebrow:'TCMC · Harmony Ears', h1:'和弦進行音準練習',
+    sub:'選一條和弦進行，選調，選你要唱的聲部，跟著節奏一路唱過整條和弦進行。',
+    howtoTitle:'使用方式',
+    howtoSteps:[
+      '選一條和弦進行，再選調性 — 選完調就會直接進入練習畫面，預設從女高音（S）開始。',
+      '在「你要唱：」列隨時切換要練習的聲部（S／A／T／B），不會中斷或重置練習進度。',
+      '用各聲部的 🔊／🔇 按鈕選擇要聽到哪些聲部，唱熟了就把自己的聲部關掉。',
+      '按「▶ 開始」：先倒數 4 拍，之後每個和弦 4 拍，依序唱完整條和弦進行。對準圖上的金色目標線來唱。',
+    ],
+    howtoTip:'音準說明：每個和弦的根音用十二平均律，三音、五音、七音以純律（純正比例）調音，與十二平均律的音分偏差會標在配置表與圖上。建議戴耳機練習，避免麥克風收到伴奏聲。',
+    chooseProg:'選擇和弦進行', keyHeader:(label)=>'選擇調性 — '+label,
+    backProg:'← 換一條和弦進行', backKey:'← 換調', changeProg:'🔀 換和弦進行',
+    outOfRange:'超出音域',
+
+    practiceHeader:(part,key)=>'和弦進行進度 — 目標聲部 '+part+' · '+key+' 調',
+    youSing:'你要唱：', you:'（你）', fullChord:'整個和弦', tempo:'速度', metronome:'節拍器', loop:'重複',
+    start:'開始', stop:'停止', micOff:'開啟麥克風', micOn:'關閉麥克風',
+    micNotEnabled:'麥克風未啟用', micListening:'聆聽中', micInitFail:'麥克風初始化失敗',
+    micFileProto:'手機用「本機檔案」打開無法要求麥克風，請改用 https 網址開啟',
+    micUnsupported:'此瀏覽器/環境不支援麥克風存取',
+    micDenied:'你拒絕了麥克風權限，請到瀏覽器/系統設定重新允許',
+    micNotFound:'找不到麥克風裝置', micNoPermission:'無法取得麥克風權限',
+    seqDefault:'按「開始」播放示範並開始偵測。',
+    seqCountIn:'倒數 4 拍……',
+    seqChord:(i,n,roman,part)=>'第 '+i+'/'+n+' 個和弦：'+roman+'　請唱 '+part+'（金色目標）。',
+    seqDone:'這條和弦進行唱完了。可以再按「開始」重來一次。',
+    showTable:'📋 顯示全曲配置表', hideTable:'📋 隱藏全曲配置表',
+    tableNote:'格內：唱名（大字）與音名。右上角：該音是和弦的第幾音（1 根音、3 三音、5 五音、6 六音、7 七音），下方是與十二平均律的音分偏差。點任何一格可以聽該音；點最上面一列的羅馬數字可以聽整個和弦。',
+    readoutHz:'目前音高', readoutCents:'與目標偏差', readoutJudge:'判定',
+    judgeSilent:'靜音', judgeOk:'✓ 準確', judgeHigh:'偏高', judgeLow:'偏低',
+    chartNote:'粗橫線＝各聲部音高（階梯狀隨和弦移動），<b>金色</b>是你要唱的目標聲部。你的即時音高軌跡落在目標 ±6 音分內顯示<b>綠色</b>，超出則<b>紅色</b>。',
+    footer1:'此練習需要麥克風權限以偵測音高。請用瀏覽器直接開啟網址；在對話框或 App 內嵌的預覽視窗中可能無法使用麥克風。',
+    footer2:'台灣合唱音樂中心製作 · Harmony Ears', versionPrefix:'App 版本：', langBtn:'EN',
+  },
+  en: {
+    title:'Chord Progression Pitch Trainer｜TCMC', eyebrow:'TCMC · Harmony Ears', h1:'Chord Progression Pitch Trainer',
+    sub:'Pick a chord progression, a key and the voice part you want to sing, then sing your part through the whole progression in time.',
+    howtoTitle:'How to use',
+    howtoSteps:[
+      'Pick a chord progression, then a key — you\'ll land straight in the practice screen, starting on Soprano (S) by default.',
+      'Switch which part you\'re singing anytime from the "You sing:" row (S / A / T / B), without interrupting or resetting your progress.',
+      'Use each part\'s 🔊 / 🔇 button to choose which parts you hear — mute your own part once you know it.',
+      'Press "▶ Start": a 4-beat count-in, then 4 beats per chord through the whole progression. Line up with the gold target line on the chart.',
+    ],
+    howtoTip:'About the tuning: each chord\'s root is equal-tempered, while its third, fifth and seventh are tuned in just intonation. The offset from equal temperament is shown in the voicing table and on the chart. Headphones are recommended so the microphone doesn\'t pick up the accompaniment.',
+    chooseProg:'Choose a Progression', keyHeader:(label)=>'Choose a Key — '+label,
+    backProg:'← Change Progression', backKey:'← Change Key', changeProg:'🔀 Change Progression',
+    outOfRange:'Out of range',
+
+    practiceHeader:(part,key)=>'Progress — Target part '+part+' · Key of '+key,
+    youSing:'You sing:', you:' (You)', fullChord:'Full Chord', tempo:'Tempo', metronome:'Metronome', loop:'Loop',
+    start:'Start', stop:'Stop', micOff:'Enable Mic', micOn:'Disable Mic',
+    micNotEnabled:'Mic not enabled', micListening:'Listening', micInitFail:'Mic initialization failed',
+    micFileProto:'Mobile browsers can\'t request the mic from a local file — please open the page via an https URL',
+    micUnsupported:'Microphone access isn\'t supported in this browser/environment',
+    micDenied:'Mic permission denied — please allow it again in your browser/system settings',
+    micNotFound:'No microphone found', micNoPermission:'Unable to get microphone permission',
+    seqDefault:'Press "Start" to hear the progression and begin pitch detection.',
+    seqCountIn:'Counting in 4 beats…',
+    seqChord:(i,n,roman,part)=>'Chord '+i+'/'+n+': '+roman+' — sing '+part+' (gold target).',
+    seqDone:'Progression complete. Press "Start" to go again.',
+    showTable:'📋 Show Voicing Table', hideTable:'📋 Hide Voicing Table',
+    tableNote:'In each cell: solfège syllable (large) and note name. Top right: which chord tone it is (1 root, 3 third, 5 fifth, 6 sixth, 7 seventh) and, below it, the offset from equal temperament in cents. Tap any cell to hear that note; tap a roman numeral in the top row to hear the whole chord.',
+    readoutHz:'Current Pitch', readoutCents:'Offset from Target', readoutJudge:'Judgement',
+    judgeSilent:'Silent', judgeOk:'✓ In tune', judgeHigh:'Sharp', judgeLow:'Flat',
+    chartNote:'Thick lines = each voice\'s pitch (stepping with the chords); <b>gold</b> is the part you sing. Your live pitch trace is <b>green</b> within ±6 cents of the target and <b>red</b> outside it.',
+    footer1:'This exercise needs microphone access to detect pitch. Open the page directly in a browser; the mic may not work inside chat or in-app preview windows.',
+    footer2:'Produced by Taiwan Choral Music Center · Harmony Ears', versionPrefix:'App Version: ', langBtn:'中文',
+  }
+};
+function detectLang(){
+  try{ const s = localStorage.getItem(LANG_KEY); if(s==='zh'||s==='en') return s; }catch(e){}
+  return ((navigator.language||'').toLowerCase().startsWith('zh')) ? 'zh' : 'en';
+}
+function t(key){ return I18N[state.lang][key]; }
+function progLabel(p){ return (state.lang==='en' && p.labelEn) ? p.labelEn : p.label; }
+
+/* ====================== State ====================== */
+let state = {
+  lang:'zh', status:{key:'seqDefault',args:[]}, micStatus:{key:'micNotEnabled',kind:undefined}, judgeKey:null,
+  progression:null, tonicOffset:null, targetPart:null,
+  running:false, listening:false, chordIndex:0,
+  audioCtx:null, tones:{}, analyser:null, micStream:null, micSource:null,
+  rafId:null, lastProcess:0, missCount:0, lastGoodPoint:null, centsHistory:[], jumpCandidate:null,
+  chartHistory:[], latestPoint:{voiced:false}, chartRafId:null, lastChartTick:0,
+  inTuneStreak:0, tempoBpm:70, beatsPerChord:4, advanceTimer:null, metronomeOn:true, loopOn:false, chartRange:null, nextClickTime:0,
+};
+const TOLERANCE = 6;
+const TRACE_MAX = 260;
+
+/* ====================== Screen navigation ====================== */
+function stopAllTones(){
+  const ctx = state.audioCtx;
+  if(ctx){
+    const tAudio = ctx.currentTime;
+    Object.keys(state.tones).forEach(k=>{ fadeStop(state.tones[k], ctx, tAudio); });
+  }
+  state.tones = {};
+}
+function goToScreen(id){
+  if(state.running) stopAll(); else stopAllTones();
+  document.querySelectorAll('.screen').forEach(el=>el.style.display='none');
+  document.getElementById(id).style.display='';
+}
+
+function renderProgressionList(){
+  const wrap = document.getElementById('progList');
+  wrap.innerHTML = '';
+  PROGRESSIONS.forEach(p=>{
+    const el = document.createElement('div');
+    el.className = 'prog-item';
+    el.innerHTML = `<div><div class="name">${progLabel(p)}</div></div><div>›</div>`;
+    el.onclick = ()=>selectProgression(p);
+    wrap.appendChild(el);
+  });
+}
+function selectProgression(p){
+  state.progression = p;
+  renderKeyGrid();
+  renderKeyHeader();
+  goToScreen('screenKey');
+}
+function renderKeyHeader(){
+  if(!state.progression) return;
+  document.getElementById('keyHeader').textContent = t('keyHeader')(progLabel(state.progression));
+}
+function renderKeyGrid(){
+  const wrap = document.getElementById('keyGrid');
+  wrap.innerHTML = '';
+  KEY_NAMES.forEach((name, offset)=>{
+    const fits = progressionFitsKey(state.progression, offset);
+    const btn = document.createElement('button');
+    btn.className = 'key-btn '+(fits?'available':'unavailable');
+    btn.innerHTML = name + (fits?'':'<span class="margin-note">'+t('outOfRange')+'</span>');
+    if(fits) btn.onclick = ()=>selectKey(offset);
+    else btn.disabled = true;
+    wrap.appendChild(btn);
+  });
+}
+async function selectKey(offset){
+  // Going straight from key selection into practice (no separate "choose voice part" step) —
+  // default to Soprano the first time; a key change later keeps whatever part you're already
+  // singing. You can switch parts anytime from the "你要唱" row on the practice screen itself.
+  state.tonicOffset = offset;
+  if(!state.targetPart) state.targetPart = 'S';
+  state.chordIndex = 0;
+  state.playOn = { S:true, A:true, T:true, B:true }; // default all audible — toggle off individually once you know the parts
+  state.tones = {};
+  state.chartRange = computeFixedChartRange(state.progression, state.tonicOffset);
+  document.getElementById('btnLoop').classList.toggle('on', state.loopOn);
+  renderTargetSwitchRow();
+  renderProgressRow();
+  renderVoiceToggleRow();
+  renderPracticeHeader();
+  goToScreen('screenPractice');
+  resizeCanvas();
+  // actually start sounding the default-on parts (not just show them as "on") —
+  // this click is the user gesture that unlocks audio on mobile, so do it now.
+  const ctx = await ensureAudioCtx();
+  VOICE_ORDER.forEach(p=>{ if(state.playOn[p]) playPartTone(p, ctx); });
+}
+function renderPracticeHeader(){
+  if(!state.targetPart || state.tonicOffset==null) return;
+  document.getElementById('practiceHeader').textContent = t('practiceHeader')(state.targetPart, KEY_NAMES[state.tonicOffset]);
+}
+function renderTargetSwitchRow(){
+  const wrap = document.getElementById('targetSwitchRow');
+  if(!wrap) return;
+  wrap.innerHTML = '<span style="align-self:center;font-size:12.5px;color:var(--muted);font-weight:700;margin-right:2px;">'+t('youSing')+'</span>';
+  VOICE_ORDER.forEach(part=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-ghost btn-sm voice-toggle'+(part===state.targetPart?' on is-target':'');
+    btn.textContent = part;
+    btn.onclick = ()=>switchTarget(part);
+    wrap.appendChild(btn);
+  });
+}
+function switchTarget(part){
+  // change which part you're singing WITHOUT leaving the practice screen or resetting
+  // progress/chord position — works any time, including after the progression finished.
+  if(part===state.targetPart) return;
+  state.targetPart = part;
+  renderTargetSwitchRow();
+  renderVoiceToggleRow();
+  renderPracticeHeader();
+  drawChart();
+  refreshConfigTableIfOpen();
+}
+function updateTableBtnLabel(){
+  const wrap = document.getElementById('configTableWrap');
+  const showing = wrap.style.display !== 'none';
+  document.getElementById('btnToggleConfigTable').textContent = showing ? t('hideTable') : t('showTable');
+}
+function toggleConfigTable(){
+  const wrap = document.getElementById('configTableWrap');
+  const showing = wrap.style.display !== 'none';
+  wrap.style.display = showing ? 'none' : '';
+  updateTableBtnLabel();
+  if(!showing) renderConfigTable();
+}
+function refreshConfigTableIfOpen(){
+  const wrap = document.getElementById('configTableWrap');
+  if(wrap && wrap.style.display!=='none') renderConfigTable();
+}
+function renderConfigTable(){
+  const wrap = document.getElementById('configTableWrap');
+  if(!state.progression || state.tonicOffset==null){ wrap.innerHTML=''; return; }
+  const chords = getResolvedChords(state.progression, state.tonicOffset);
+  const isMinorKey = isMinorKeyProgression(state.progression);
+  let html = '<table class="config-table"><thead><tr><th></th>';
+  chords.forEach((c,i)=>{ html += '<th class="'+(i===state.chordIndex?'is-target-col':'')+' tappable-header" data-idx="'+i+'">'+c.roman+'</th>'; });
+  html += '</tr></thead><tbody>';
+  VOICE_ORDER.forEach(part=>{
+    html += '<tr><th>'+part+(part===state.targetPart?' ★':'')+'</th>';
+    chords.forEach((chord,i)=>{
+      const vp = chord.voicing[part];
+      const cls = (i===state.chordIndex?'is-target-col':'')+(part===state.targetPart?' is-target-col':'');
+      if(!vp){ html += '<td class="'+cls+'">—</td>'; return; }
+      const name = noteNameForApproxMidi(midiApproxForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct));
+      const solf = solfegeForApproxMidi(midiApproxForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct), state.tonicOffset, isMinorKey);
+      const degreeNum = CHORD_TONE_DEGREE[vp.func] || '';
+      const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+      const etOff = centsOffsetFromET(freq);
+      const etStr = (etOff>=0?'+':'')+etOff.toFixed(0)+'¢';
+      html += '<td class="'+cls+' tappable-cell" data-part="'+part+'" data-idx="'+i+'"><span class="tone-degree">'+degreeNum+'<span class="tone-et">'+etStr+'</span></span>'+solf+'<span class="note-sub">'+name+'</span></td>';
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  html += '<div class="note">'+t('tableNote')+'</div>';
+  wrap.innerHTML = html;
+}
+// tap any cell in the config table to hear that exact voice's note — lets the singer
+// check what they're about to sing before pressing Start at all.
+// (attached directly, not via DOMContentLoaded: this script runs at the end of body,
+// after configTableWrap already exists in the static markup, so DOMContentLoaded may
+// already have fired by now and would never trigger this listener.)
+// Uses pointerdown rather than click — some embedded mobile webviews
+// don't reliably fire 'click' on custom elements, but pointerdown fires on the
+// very first touch/mouse contact and is broadly supported, so the flash is instant either way.
+(function(){
+  const wrap = document.getElementById('configTableWrap');
+  if(!wrap) return;
+  let lastFireAt = 0;
+  wrap.addEventListener('pointerdown', async (e)=>{
+    const headerCell = e.target.closest('.tappable-header');
+    const cell = e.target.closest('.tappable-cell');
+    if(!headerCell && !cell) return;
+    if(!state.progression) return;
+    const now = Date.now();
+    if(now - lastFireAt < 150) return; // guard against double-fire if a browser also sends a click right after
+    lastFireAt = now;
+    // explicit JS-driven flash — more reliable than relying on :active on mobile touch,
+    // and gives feedback even when audio itself doesn't play (e.g. no sound output/permission issue)
+    const flashTarget = headerCell || cell;
+    flashTarget.classList.add('cell-flash');
+    setTimeout(()=>flashTarget.classList.remove('cell-flash'), 1000);
+    const chords = getResolvedChords(state.progression, state.tonicOffset);
+    const ctx = await ensureAudioCtx();
+    if(headerCell){
+      // play every voice of this chord together — a quick way to hear the whole sonority
+      // for any column, not just the one currently playing in the practice sequence.
+      const idx = parseInt(headerCell.dataset.idx,10);
+      const chord = chords[idx];
+      const tNow = ctx.currentTime+0.02;
+      VOICE_ORDER.forEach(part=>{
+        const vp = chord.voicing[part];
+        if(!vp) return;
+        const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+        const tone = makeTone(ctx, freq);
+        const peak = part===state.targetPart?0.26:0.18;
+        tone.gain.gain.setValueAtTime(0, tNow);
+        tone.gain.gain.linearRampToValueAtTime(peak, tNow+0.03);
+        tone.gain.gain.setValueAtTime(peak, tNow+0.85);
+        tone.gain.gain.linearRampToValueAtTime(0, tNow+1.0);
+        stopTone(tone, tNow+1.05);
+      });
+      return;
+    }
+    const part = cell.dataset.part;
+    const idx = parseInt(cell.dataset.idx,10);
+    const chord = chords[idx];
+    const vp = chord.voicing[part];
+    if(!vp) return;
+    const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+    const tNow = ctx.currentTime+0.02;
+    const tone = makeTone(ctx, freq);
+    tone.gain.gain.setValueAtTime(0, tNow);
+    tone.gain.gain.linearRampToValueAtTime(part===state.targetPart?0.26:0.18, tNow+0.03);
+    tone.gain.gain.setValueAtTime(part===state.targetPart?0.26:0.18, tNow+0.85);
+    tone.gain.gain.linearRampToValueAtTime(0, tNow+1.0);
+    stopTone(tone, tNow+1.05);
+  });
+})();
+function renderVoiceToggleRow(){
+  const wrap = document.getElementById('voiceToggleRow');
+  if(!wrap) return;
+  wrap.innerHTML = '';
+  VOICE_ORDER.forEach(part=>{
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'btn btn-ghost btn-sm voice-toggle'+(state.playOn[part]?' on':'')+(part===state.targetPart?' is-target':'');
+    btn.textContent = (state.playOn[part]?'🔊 ':'🔇 ')+part+(part===state.targetPart?t('you'):'');
+    btn.onclick = ()=>togglePartPlay(part);
+    wrap.appendChild(btn);
+  });
+  const chordBtn = document.getElementById('btnPlayChord');
+  if(chordBtn){
+    const allOn = VOICE_ORDER.every(p=>state.playOn[p]);
+    chordBtn.classList.toggle('on', allOn);
+    chordBtn.textContent = (allOn?'🔊 ':'🔉 ')+t('fullChord');
+  }
+}
+function playPartTone(part, ctx){
+  const freqs = currentChordFreqs();
+  const f = freqs[part];
+  if(!f || state.tones[part]) return;
+  const tNow = ctx.currentTime+0.02;
+  const tone = makeTone(ctx, f);
+  tone.gain.gain.setValueAtTime(0, tNow);
+  tone.gain.gain.linearRampToValueAtTime(part===state.targetPart?0.22:0.16, tNow+0.15);
+  state.tones[part] = tone;
+}
+function stopPartTone(part, ctx){
+  if(!state.tones[part]) return;
+  fadeStop(state.tones[part], ctx, ctx.currentTime+0.02);
+  delete state.tones[part];
+}
+async function togglePartPlay(part){
+  state.playOn[part] = !state.playOn[part];
+  renderVoiceToggleRow();
+  // works whether or not practice is "running" — lets the user preview any voice's pitch
+  // beforehand, not just while a chord is actively counting down.
+  const ctx = await ensureAudioCtx();
+  if(state.playOn[part]) playPartTone(part, ctx); else stopPartTone(part, ctx);
+}
+async function toggleWholeChord(){
+  const allOn = VOICE_ORDER.every(p=>state.playOn[p]);
+  const turnOn = !allOn;
+  const ctx = await ensureAudioCtx();
+  VOICE_ORDER.forEach(p=>{
+    state.playOn[p] = turnOn;
+    if(turnOn) playPartTone(p, ctx); else stopPartTone(p, ctx);
+  });
+  renderVoiceToggleRow();
+}
+function renderProgressRow(){
+  const wrap = document.getElementById('progressRow');
+  wrap.innerHTML = '';
+  const chords = getResolvedChords(state.progression, state.tonicOffset);
+  chords.forEach((c,i)=>{
+    const pill = document.createElement('div');
+    pill.className = 'chord-pill'+(i===state.chordIndex?' current':(i<state.chordIndex?' done':''));
+    pill.textContent = c.roman;
+    wrap.appendChild(pill);
+  });
+  const big = document.getElementById('currentChordBig');
+  const chord = chords[state.chordIndex];
+  big.innerHTML = chord.roman + '<span class="of">'+(state.chordIndex+1)+' / '+chords.length+'</span>';
+  refreshConfigTableIfOpen();
+}
+
+/* ====================== Audio engine ====================== */
+async function ensureAudioCtx(){
+  if(!state.audioCtx) state.audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  if(state.audioCtx.state==='suspended') await state.audioCtx.resume();
+  return state.audioCtx;
+}
+function makeTone(ctx, freq){
+  const gain = ctx.createGain(); gain.gain.value=0; gain.connect(ctx.destination);
+  const osc = ctx.createOscillator(); osc.type='sine'; osc.frequency.value=freq;
+  osc.connect(gain); osc.start();
+  return {oscs:[osc], gain};
+}
+function stopTone(tone, when){ if(!tone) return; tone.oscs.forEach(o=>{ try{o.stop(when);}catch(e){} }); }
+function fadeStop(tone, ctx, when){
+  if(!tone) return;
+  try{
+    tone.gain.gain.cancelScheduledValues(when);
+    tone.gain.gain.setValueAtTime(tone.gain.gain.value, when);
+    tone.gain.gain.linearRampToValueAtTime(0, when+0.1);
+    stopTone(tone, when+0.14);
+  }catch(e){}
+}
+
+/* ====================== Chord/voicing helpers for current progression+key ====================== */
+function currentChordFreqs(){
+  if(!state.progression) return {};
+  const chords = getResolvedChords(state.progression, state.tonicOffset);
+  const idx = Math.max(0, Math.min(state.chordIndex, chords.length-1));
+  const chord = chords[idx];
+  const out = {};
+  VOICE_ORDER.forEach(part=>{
+    const vp = chord.voicing[part];
+    if(vp) out[part] = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+  });
+  return out;
+}
+
+/* ====================== Tempo ====================== */
+function onTempoChange(){
+  state.tempoBpm = parseInt(document.getElementById('tempoSlider').value,10);
+  document.getElementById('tempoVal').textContent = state.tempoBpm+' BPM';
+}
+function beatDurationMs(){ return 60000/state.tempoBpm; }
+function chordDurationMs(){ return beatDurationMs()*state.beatsPerChord; }
+
+/* ====================== Practice sequence ====================== */
+function updateStatus(key, ...args){
+  state.status = {key, args};
+  const v = t(key);
+  document.getElementById('seqStatus').textContent = (typeof v==='function') ? v(...args) : v;
+}
+function setMicStatus(key, kind){
+  state.micStatus = {key, kind};
+  document.getElementById('micText').textContent = t(key);
+  document.getElementById('micDot').className = 'dot'+(kind?(' '+kind):'');
+}
+function setToggleLabel(id, on, offKey, onKey){
+  const el = document.getElementById(id);
+  el.textContent = (on?'■ ':'🎤 ')+t(on?onKey:offKey);
+  el.classList.toggle('on', on);
+}
+
+async function ensureMicStream(){
+  if(state.micStream && state.micStream.getAudioTracks().some(tr=>tr.readyState==='live')) return state.micStream;
+  if(!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    // this is the case that produces NO permission prompt at all — usually means the page
+    // isn't loaded over https (mobile browsers refuse to even offer mic access over file:// or http://)
+    setMicStatus(location.protocol==='file:' ? 'micFileProto' : 'micUnsupported', 'err');
+    state.micStream = null;
+    return null;
+  }
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({audio:{echoCancellation:true, noiseSuppression:false, autoGainControl:false}});
+    state.micStream = stream;
+    return stream;
+  }catch(err){
+    let msg = 'micNoPermission';
+    if(err && err.name==='NotAllowedError') msg = 'micDenied';
+    else if(err && err.name==='NotFoundError') msg = 'micNotFound';
+    setMicStatus(msg, 'err');
+    state.micStream = null;
+    return null;
+  }
+}
+
+async function startPractice(){
+  if(!state.targetPart) return;
+  stopAll();
+  const ctx = await ensureAudioCtx();
+  await ensureMicStream();
+  state.chartHistory = []; state.latestPoint = {voiced:false}; state.inTuneStreak = 0; state.chordIndex = 0;
+  state.running = true;
+  document.getElementById('btnStart').disabled = true;
+  document.getElementById('btnStop').disabled = false;
+  document.getElementById('btnMicToggle').disabled = true;
+  renderProgressRow();
+  updateStatus('seqCountIn');
+  playCountIn();
+  startListening();
+  state.chartRafId = requestAnimationFrame(chartTickLoop);
+}
+
+function scheduleClick(ctx, when, accent){
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+  osc.type='sine'; osc.frequency.value = accent?1500:1100;
+  osc.connect(gain); gain.connect(ctx.destination);
+  gain.gain.setValueAtTime(0, when);
+  gain.gain.linearRampToValueAtTime(accent?0.4:0.28, when+0.004);
+  gain.gain.linearRampToValueAtTime(0, when+0.05);
+  osc.start(when); osc.stop(when+0.06);
+}
+async function toggleMetronome(){
+  state.metronomeOn = !state.metronomeOn;
+  document.getElementById('btnMetronome').classList.toggle('on', state.metronomeOn);
+  if(state.metronomeOn){
+    // immediate confirmation click so tapping the button itself gives audible feedback
+    const ctx = await ensureAudioCtx();
+    scheduleClick(ctx, ctx.currentTime+0.02, true);
+  }
+}
+function msUntilAudioTime(t){
+  const ctx = state.audioCtx;
+  return Math.max(0, (t - ctx.currentTime)*1000);
+}
+function playCountIn(){
+  const ctx = state.audioCtx;
+  const beatSec = beatDurationMs()/1000;
+  // nextClickTime is a single continuous audio-clock anchor used for every click from here on
+  // (count-in AND every chord boundary) so there's never an audible gap/drift between the
+  // "prep" beats and the "real" beats — they're literally the same uninterrupted metronome grid.
+  state.nextClickTime = ctx.currentTime + 0.05;
+  if(state.metronomeOn){
+    for(let i=0;i<4;i++){ scheduleClick(ctx, state.nextClickTime + i*beatSec, i===0); }
+  }
+  state.nextClickTime += 4*beatSec;
+  state.advanceTimer = setTimeout(()=>{
+    if(!state.running) return;
+    playChordOnset();
+  }, msUntilAudioTime(state.nextClickTime));
+}
+
+function playChordOnset(){
+  const ctx = state.audioCtx;
+  const freqs = currentChordFreqs();
+  const tNow = ctx.currentTime+0.02;
+  // stop previous tones
+  Object.keys(state.tones).forEach(k=>{ fadeStop(state.tones[k], ctx, tNow); });
+  state.tones = {};
+  // play whichever voices are toggled on (see voice-toggle-row) — target included if the user turned it on
+  VOICE_ORDER.forEach(part=>{
+    if(!state.playOn[part]) return;
+    const f = freqs[part];
+    if(!f) return;
+    const tone = makeTone(ctx, f);
+    tone.gain.gain.setValueAtTime(0, tNow);
+    tone.gain.gain.linearRampToValueAtTime(part===state.targetPart?0.22:0.16, tNow+0.15);
+    state.tones[part] = tone;
+  });
+  const chord = getResolvedChords(state.progression, state.tonicOffset)[state.chordIndex];
+  updateStatus('seqChord', state.chordIndex+1, getResolvedChords(state.progression, state.tonicOffset).length, chord.roman, state.targetPart);
+  drawChart(); // immediate redraw so the step reflects the new chord without waiting on the next tick
+  // click continues through the whole progression, not just the lead-in count-in — first beat of
+  // each chord is accented so you can hear the chord change even without watching the screen.
+  // Scheduling stays anchored to the same continuous nextClickTime grid set up in playCountIn(),
+  // never recomputed from "now", so there's no drift/gap between chords either.
+  const beatSec = beatDurationMs()/1000;
+  if(state.metronomeOn){
+    for(let i=0;i<state.beatsPerChord;i++){ scheduleClick(ctx, state.nextClickTime + i*beatSec, i===0); }
+  }
+  const chordEndTime = state.nextClickTime + state.beatsPerChord*beatSec;
+  state.nextClickTime = chordEndTime;
+  // reset pitch-tracking state so the octave-jump guard doesn't freeze the trace against
+  // the PREVIOUS chord's last detected pitch — the target just changed, a jump here is expected.
+  state.lastGoodPoint = null; state.jumpCandidate = null; state.missCount = 0; state.centsHistory = [];
+  state.advanceTimer = setTimeout(advanceChord, msUntilAudioTime(chordEndTime));
+}
+function advanceChord(){
+  if(!state.running) return;
+  state.chordIndex++;
+  if(state.chordIndex >= getResolvedChords(state.progression, state.tonicOffset).length){
+    if(state.loopOn){
+      state.chordIndex = 0;
+      renderProgressRow();
+      playChordOnset();
+      return;
+    }
+    state.chordIndex = 0; // reset so post-stop preview toggles (S/A/T/B, Full Chord) don't read an out-of-range chord
+    renderProgressRow();
+    stopAll();
+    updateStatus('seqDone');
+    return;
+  }
+  renderProgressRow();
+  playChordOnset();
+}
+
+function toggleLoop(){
+  state.loopOn = !state.loopOn;
+  document.getElementById('btnLoop').classList.toggle('on', state.loopOn);
+}
+function toggleMic(){
+  if(!state.running) return;
+  if(state.listening) stopListening(); else startListening();
+}
+async function startListening(){
+  if(state.listening) return;
+  setToggleLabel('btnMicToggle', true, 'micOff','micOn');
+  try{
+    const stream = await ensureMicStream();
+    if(!stream){
+      // ensureMicStream() already set a specific status message — don't overwrite it
+      setToggleLabel('btnMicToggle', false, 'micOff','micOn');
+      return;
+    }
+    const ctx = await ensureAudioCtx();
+    const src = ctx.createMediaStreamSource(stream);
+    const analyser = ctx.createAnalyser();
+    analyser.fftSize = 2048;
+    src.connect(analyser);
+    state.analyser = analyser; state.micSource = src; state.listening = true;
+    setMicStatus('micListening', 'ok');
+    document.getElementById('btnMicToggle').disabled = false;
+    state.lastProcess=0; state.missCount=0; state.lastGoodPoint=null; state.centsHistory=[]; state.jumpCandidate=null;
+    loopPitch(performance.now());
+  }catch(err){
+    setMicStatus('micInitFail', 'err');
+    setToggleLabel('btnMicToggle', false, 'micOff','micOn');
+  }
+}
+function stopListening(){
+  state.listening=false;
+  if(state.rafId) cancelAnimationFrame(state.rafId);
+  state.rafId=null;
+  if(state.micStream){ state.micStream.getTracks().forEach(tr=>tr.stop()); }
+  state.micStream=null; state.analyser=null;
+  setMicStatus('micNotEnabled');
+  setToggleLabel('btnMicToggle', false, 'micOff','micOn');
+}
+function stopAll(){
+  if(state.advanceTimer){ clearTimeout(state.advanceTimer); state.advanceTimer=null; }
+  if(state.chartRafId){ cancelAnimationFrame(state.chartRafId); state.chartRafId=null; }
+  stopAllTones();
+  state.running = false;
+  stopListening();
+  document.getElementById('btnStart').disabled = false;
+  document.getElementById('btnStop').disabled = true;
+  document.getElementById('btnMicToggle').disabled = true;
+}
+
+/* ====================== Pitch detection ====================== */
+function detectPitch(buf, sampleRate, minFreq, maxFreq){
+  minFreq = minFreq||55; maxFreq = maxFreq||1100;
+  const n = buf.length;
+  let mean=0; for(let i=0;i<n;i++) mean+=buf[i]; mean/=n;
+  let rms=0; for(let i=0;i<n;i++){ const v=buf[i]-mean; rms+=v*v; } rms=Math.sqrt(rms/n);
+  if(rms<0.0035) return {freq:-1, rms, clarity:0};
+  const maxLag = Math.min(n-2, Math.floor(sampleRate/minFreq));
+  const minLag = Math.max(2, Math.floor(sampleRate/maxFreq));
+  if(maxLag<=minLag) return {freq:-1, rms, clarity:0};
+  const nsdf = new Float32Array(maxLag+2);
+  for(let lag=minLag; lag<=maxLag; lag++){
+    let acf=0,m=0; const limit=n-lag;
+    for(let i=0;i<limit;i++){ const a=buf[i]-mean, b=buf[i+lag]-mean; acf+=a*b; m+=a*a+b*b; }
+    nsdf[lag] = m>0 ? (2*acf/m) : 0;
+  }
+  const peaks=[];
+  for(let lag=minLag+1; lag<maxLag; lag++){
+    if(nsdf[lag-1]<=nsdf[lag] && nsdf[lag]>=nsdf[lag+1] && nsdf[lag]>0) peaks.push(lag);
+  }
+  if(peaks.length===0) return {freq:-1, rms, clarity:0};
+  let globalMax=0; for(const p of peaks) if(nsdf[p]>globalMax) globalMax=nsdf[p];
+  if(globalMax<=0) return {freq:-1, rms, clarity:0};
+  const K=0.8;
+  let chosen = peaks.find(p=>nsdf[p]>=K*globalMax);
+  if(chosen===undefined) chosen=peaks[0];
+  const y1=nsdf[chosen-1], y2=nsdf[chosen], y3=nsdf[chosen+1];
+  let shift=0; const denom=(y1-2*y2+y3); if(denom!==0) shift=0.5*(y1-y3)/denom;
+  const refinedLag = chosen+shift;
+  const clarity = y2;
+  if(clarity<0.22) return {freq:-1, rms, clarity};
+  const freq = sampleRate/refinedLag;
+  if(freq<minFreq||freq>maxFreq) return {freq:-1, rms, clarity};
+  return {freq, rms, clarity};
+}
+function computeSearchRange(freqsObj, targetFreq){
+  const freqs = Object.values(freqsObj||{}).filter(f=>f>0);
+  if(freqs.length){
+    const lo = Math.min(...freqs), hi = Math.max(...freqs);
+    return { min: lo*0.85, max: hi*1.35 };
+  }
+  if(targetFreq) return { min: targetFreq*0.75, max: targetFreq*1.7 };
+  return { min: 55, max: 1100 };
+}
+function loopPitch(ts){
+  if(!state.listening) return;
+  state.rafId = requestAnimationFrame(loopPitch);
+  if(ts-state.lastProcess<40) return;
+  state.lastProcess = ts;
+  const analyser = state.analyser;
+  if(!analyser) return;
+  const buf = new Float32Array(analyser.fftSize);
+  analyser.getFloatTimeDomainData(buf);
+  const sampleRate = state.audioCtx.sampleRate;
+
+  const freqs = currentChordFreqs();
+  const targetFreq = freqs[state.targetPart];
+  const searchRange = computeSearchRange(freqs, targetFreq);
+  const {freq, rms, clarity} = detectPitch(buf, sampleRate, searchRange.min, searchRange.max);
+
+  let point = {cents:null, voiced:false};
+  if(freq>0 && targetFreq){
+    const cents = 1200*Math.log2(freq/targetFreq);
+    if(cents>-1200 && cents<1200){ point = {cents, voiced:true, freq}; }
+  }
+
+  const GRACE=12, JUMP_THRESHOLD=80, JUMP_CLARITY_MIN=0.42, JUMP_CONFIRM_FRAMES=3;
+  if(point.voiced){
+    const isBigJump = state.lastGoodPoint && Math.abs(point.cents-state.lastGoodPoint.cents)>JUMP_THRESHOLD;
+    if(isBigJump){
+      const candidate = state.jumpCandidate;
+      const matches = candidate && Math.abs(point.cents-candidate.cents)<40;
+      if(clarity>=JUMP_CLARITY_MIN && matches){ candidate.streak++; candidate.cents=point.cents; candidate.freq=point.freq; }
+      else if(clarity>=JUMP_CLARITY_MIN){ state.jumpCandidate={cents:point.cents,freq:point.freq,streak:1}; }
+      else { state.jumpCandidate=null; }
+      if(state.jumpCandidate && state.jumpCandidate.streak>=JUMP_CONFIRM_FRAMES){
+        state.missCount=0; state.lastGoodPoint=point; state.jumpCandidate=null;
+      } else if(state.lastGoodPoint && state.missCount<GRACE){ state.missCount++; point=state.lastGoodPoint; }
+      else { state.missCount++; }
+    } else { state.missCount=0; state.lastGoodPoint=point; state.jumpCandidate=null; }
+  } else if(state.lastGoodPoint && state.missCount<GRACE){ state.missCount++; point=state.lastGoodPoint; }
+  else { state.missCount++; state.lastGoodPoint=null; state.jumpCandidate=null; }
+
+  if(point.voiced){
+    state.centsHistory.push(point.cents);
+    if(state.centsHistory.length>3) state.centsHistory.shift();
+    if(state.centsHistory.length===3){
+      const sorted=[...state.centsHistory].sort((a,b)=>a-b);
+      point = {...point, cents:sorted[1]};
+    }
+  } else { state.centsHistory=[]; }
+
+  // just record the latest detected point — the chart's own timeline loop (chartTickLoop)
+  // is what actually advances the scrolling history now, independent of the mic's frame rate.
+  state.latestPoint = point;
+  updateReadout(point);
+}
+function chartTickLoop(ts){
+  if(!state.running){ state.chartRafId=null; return; }
+  state.chartRafId = requestAnimationFrame(chartTickLoop);
+  if(ts-state.lastChartTick<50) return;
+  state.lastChartTick = ts;
+  state.chartHistory.push({ refFreqs: currentChordFreqs(), point: state.latestPoint });
+  if(state.chartHistory.length>CHART_HISTORY_MAX) state.chartHistory.shift();
+  drawChart();
+}
+function updateReadout(point){
+  const hzEl=document.getElementById('curHz'), centsEl=document.getElementById('curCents'), judgeEl=document.getElementById('curJudge');
+  if(!point.voiced){ hzEl.textContent='—'; centsEl.textContent='—'; state.judgeKey='judgeSilent'; judgeEl.textContent=t('judgeSilent'); judgeEl.className=''; state.inTuneStreak=0; return; }
+  hzEl.textContent = point.freq.toFixed(1)+' Hz';
+  const diff = point.cents;
+  centsEl.textContent = (diff>=0?'+':'')+diff.toFixed(1)+' ¢';
+  if(Math.abs(diff)<=TOLERANCE){ state.judgeKey='judgeOk'; judgeEl.textContent=t('judgeOk'); judgeEl.className='tune-ok'; state.inTuneStreak++; }
+  else if(diff>0){ state.judgeKey='judgeHigh'; judgeEl.textContent=t('judgeHigh'); judgeEl.className='tune-high'; state.inTuneStreak=0; }
+  else { state.judgeKey='judgeLow'; judgeEl.textContent=t('judgeLow'); judgeEl.className='tune-low'; state.inTuneStreak=0; }
+}
+
+/* ====================== Chart ====================== */
+const canvas = document.getElementById('chart');
+const CHART_HISTORY_MAX = TRACE_MAX;
+function resizeCanvas(){
+  const dpr = window.devicePixelRatio||1;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = Math.round(rect.width*dpr);
+  canvas.height = Math.round(rect.height*dpr);
+  drawChart();
+}
+window.addEventListener('resize', resizeCanvas);
+const A2_MIDI = 45;
+function centsFromA2ForFreq(freq){ return 1200*Math.log2(freq/midiToFreq(A2_MIDI)); }
+function centsOffsetFromET(freq){
+  // how far this JI pitch sits from the nearest standard equal-tempered (A4=440) semitone —
+  // shown on the chart so singers used to ET (piano etc.) know which way to lean.
+  const nearestMidi = Math.round(69 + 12*Math.log2(freq/440));
+  const etFreq = midiToFreq(nearestMidi);
+  return 1200*Math.log2(freq/etFreq);
+}
+function chartRangeForFreqs(freqs){
+  const vals = Object.values(freqs||{}).filter(f=>f>0).map(centsFromA2ForFreq);
+  if(!vals.length) return {lo:0, hi:1200};
+  let lo = Math.min(...vals)-150, hi = Math.max(...vals)+150;
+  if(hi-lo<400){ const mid=(hi+lo)/2; lo=mid-200; hi=mid+200; }
+  return {lo,hi};
+}
+function computeFixedChartRange(prog, tonicOffset){
+  // fixed across the WHOLE progression (not recomputed per chord) so the reference lines
+  // actually visibly move up/down as the chord changes, instead of the axis re-centering
+  // on every chord and making it look like nothing moved.
+  const vals = [];
+  getResolvedChords(prog, tonicOffset).forEach(chord=>{
+    VOICE_ORDER.forEach(part=>{
+      const vp = chord.voicing[part];
+      if(!vp) return;
+      vals.push(centsFromA2ForFreq(noteFreqForVoicing(tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct)));
+    });
+  });
+  if(!vals.length) return {lo:0, hi:1200};
+  let lo = Math.min(...vals)-120, hi = Math.max(...vals)+120;
+  if(hi-lo<400){ const mid=(hi+lo)/2; lo=mid-200; hi=mid+200; }
+  return {lo,hi};
+}
+function yFor(cents,H,range){ const pad=14; const frac=(cents-range.lo)/(range.hi-range.lo); return H-pad-frac*(H-2*pad); }
+// Draws a value that only changes at discrete steps as a proper staircase (flat segments +
+// right-angle jumps) rather than diagonal interpolation between points.
+function drawSteppedLine(ctx2d, xs, ys, color, lineWidth){
+  if(xs.length<1) return;
+  ctx2d.strokeStyle = color; ctx2d.lineWidth = lineWidth;
+  ctx2d.beginPath();
+  ctx2d.moveTo(xs[0], ys[0]);
+  for(let i=1;i<xs.length;i++){
+    if(ys[i]!==ys[i-1]) ctx2d.lineTo(xs[i], ys[i-1]);
+    ctx2d.lineTo(xs[i], ys[i]);
+  }
+  ctx2d.stroke();
+}
+function drawChart(){
+  const ctx2d = canvas.getContext('2d');
+  const W=canvas.width, H=canvas.height, dpr=window.devicePixelRatio||1;
+  ctx2d.clearRect(0,0,W,H);
+  ctx2d.fillStyle='#20292D'; ctx2d.fillRect(0,0,W,H);
+
+  const liveFreqs = state.progression ? currentChordFreqs() : {};
+  const range = state.chartRange || chartRangeForFreqs(liveFreqs);
+  ctx2d.strokeStyle='rgba(234,242,241,0.05)'; ctx2d.lineWidth=1*dpr;
+  for(let c=Math.ceil(range.lo/100)*100; c<=range.hi; c+=100){
+    const y=yFor(c,H,range);
+    ctx2d.beginPath(); ctx2d.moveTo(0,y); ctx2d.lineTo(W,y); ctx2d.stroke();
+  }
+
+  const history = state.chartHistory;
+  const targetFreq = liveFreqs[state.targetPart];
+
+  if(!history || history.length===0){
+    // no timeline yet (haven't pressed Start) — fall back to a flat preview of the current chord
+    if(targetFreq){
+      const targetCents = centsFromA2ForFreq(targetFreq);
+      const yHi=yFor(targetCents+TOLERANCE,H,range), yLo=yFor(targetCents-TOLERANCE,H,range);
+      ctx2d.fillStyle = 'rgba(232,163,61,0.11)';
+      ctx2d.fillRect(0,yHi,W,yLo-yHi);
+    }
+    VOICE_ORDER.forEach(part=>{
+      const f = liveFreqs[part];
+      if(!f) return;
+      const y = yFor(centsFromA2ForFreq(f),H,range);
+      const isTarget = part===state.targetPart;
+      ctx2d.strokeStyle = isTarget ? '#E8A33D' : '#2FBFAA';
+      ctx2d.lineWidth = (isTarget?4.5:2.5)*dpr;
+      ctx2d.beginPath(); ctx2d.moveTo(0,y); ctx2d.lineTo(W,y); ctx2d.stroke();
+      ctx2d.fillStyle = isTarget ? '#E8A33D' : '#8FD9C8';
+      ctx2d.font=(11*dpr)+'px "Noto Sans TC",sans-serif';
+      ctx2d.textBaseline='bottom';
+      const etOff = centsOffsetFromET(f);
+      ctx2d.fillText(part+'  '+f.toFixed(1)+'Hz  ET'+(etOff>=0?'+':'')+etOff.toFixed(0)+'¢', 8*dpr, y-4*dpr);
+    });
+    return;
+  }
+
+  // target-tolerance shading band, anchored to the CURRENT (rightmost/latest) target pitch
+  if(targetFreq){
+    const targetCents = centsFromA2ForFreq(targetFreq);
+    const yHi=yFor(targetCents+TOLERANCE,H,range), yLo=yFor(targetCents-TOLERANCE,H,range);
+    ctx2d.fillStyle = state.inTuneStreak>10 ? 'rgba(51,209,122,0.20)' : 'rgba(232,163,61,0.11)';
+    ctx2d.fillRect(0,yHi,W,yLo-yHi);
+  }
+
+  const n = history.length;
+  const xFor = i => W-(n-i)*(W/CHART_HISTORY_MAX);
+
+  // stepped reference lines — one staircase per voice, spanning the whole visible history
+  VOICE_ORDER.forEach(part=>{
+    const xs=[], ys=[];
+    for(let i=0;i<n;i++){
+      const f = history[i].refFreqs[part];
+      if(f==null) continue;
+      xs.push(xFor(i)); ys.push(yFor(centsFromA2ForFreq(f),H,range));
+    }
+    const isTarget = part===state.targetPart;
+    drawSteppedLine(ctx2d, xs, ys, isTarget?'#E8A33D':'#2FBFAA', (isTarget?4.5:2.5)*dpr);
+  });
+
+  // current labels anchored at the right edge (latest = "now")
+  VOICE_ORDER.forEach(part=>{
+    const f = liveFreqs[part];
+    if(!f) return;
+    const y = yFor(centsFromA2ForFreq(f),H,range);
+    const isTarget = part===state.targetPart;
+    ctx2d.fillStyle = isTarget ? '#E8A33D' : '#8FD9C8';
+    ctx2d.font=(11*dpr)+'px "Noto Sans TC",sans-serif';
+    ctx2d.textBaseline='bottom';
+    ctx2d.textAlign='right';
+    const etOff = centsOffsetFromET(f);
+    ctx2d.fillText(part+'  '+f.toFixed(1)+'Hz  ET'+(etOff>=0?'+':'')+etOff.toFixed(0)+'¢', W-6*dpr, y-4*dpr);
+    ctx2d.textAlign='left';
+  });
+
+  // the singer's own live trace, colored green/red by tolerance, gaps where unvoiced
+  if(targetFreq){
+    ctx2d.lineWidth=2.5*dpr;
+    let started=false, lastColor=null;
+    for(let i=0;i<n;i++){
+      const p = history[i].point;
+      const x = xFor(i);
+      if(p && p.voiced){
+        const y=yFor(centsFromA2ForFreq(p.freq),H,range);
+        const inTune = Math.abs(p.cents)<=TOLERANCE;
+        const color = inTune?'#33D17A':'#E2685A';
+        if(!started||color!==lastColor){
+          if(started) ctx2d.stroke();
+          ctx2d.beginPath(); ctx2d.strokeStyle=color;
+          if(i>0 && history[i-1].point && history[i-1].point.voiced){
+            ctx2d.moveTo(xFor(i-1), yFor(centsFromA2ForFreq(history[i-1].point.freq),H,range));
+          } else { ctx2d.moveTo(x,y); }
+          started=true; lastColor=color;
+        }
+        ctx2d.lineTo(x,y);
+      } else { if(started) ctx2d.stroke(); started=false; lastColor=null; }
+    }
+    if(started) ctx2d.stroke();
+  }
+}
+
+/* ====================== Language switch ====================== */
+function toggleLang(){
+  state.lang = state.lang==='zh' ? 'en' : 'zh';
+  try{ localStorage.setItem(LANG_KEY, state.lang); }catch(e){}
+  applyLang();
+}
+function applyLang(){
+  document.documentElement.lang = state.lang==='zh' ? 'zh-Hant' : 'en';
+  document.title = t('title');
+  const set = (id,text)=>{ const el=document.getElementById(id); if(el) el.textContent = text; };
+  set('txtEyebrow', t('eyebrow')); set('txtH1', t('h1')); set('txtSub', t('sub')); set('btnLang', t('langBtn'));
+  set('txtHowtoTitle', t('howtoTitle')); set('txtHowtoTip', t('howtoTip'));
+  document.getElementById('howtoList').innerHTML = t('howtoSteps').map(s=>'<li>'+s+'</li>').join('');
+  set('txtProgHeader', t('chooseProg'));
+  set('btnBackProg', t('backProg')); set('btnBackKeyFromPractice', t('backKey')); set('btnChangeProg', t('changeProg'));
+  set('txtTempo', t('tempo')); set('btnMetronome', '🔔 '+t('metronome')); set('btnLoop', '🔁 '+t('loop'));
+  set('btnStart', '▶ '+t('start')); set('btnStop', '■ '+t('stop'));
+  set('txtReadoutHz', t('readoutHz')); set('txtReadoutCents', t('readoutCents')); set('txtReadoutJudge', t('readoutJudge'));
+  document.getElementById('txtChartNote').innerHTML = t('chartNote');
+  set('txtFooter1', t('footer1')); set('txtFooter2', t('footer2')); set('txtVersionPrefix', t('versionPrefix'));
+  // dynamic pieces
+  renderProgressionList();
+  renderKeyHeader();
+  if(state.progression) renderKeyGrid();
+  if(state.targetPart){
+    renderPracticeHeader(); renderTargetSwitchRow(); renderVoiceToggleRow(); refreshConfigTableIfOpen();
+  }
+  updateTableBtnLabel();
+  setToggleLabel('btnMicToggle', state.listening, 'micOff','micOn');
+  setMicStatus(state.micStatus.key, state.micStatus.kind);
+  updateStatus(state.status.key, ...state.status.args);
+  document.getElementById('curJudge').textContent = state.judgeKey ? t(state.judgeKey) : '—';
+}
+
+/* ====================== Init ====================== */
+state.lang = detectLang();
+applyLang();
+onTempoChange();
+</script>
+</body>
+</html>
