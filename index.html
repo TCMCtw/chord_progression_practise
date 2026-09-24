@@ -35,6 +35,13 @@
   .howto li{margin-bottom:3px;}
   .howto .tip{margin-top:10px;font-size:12.5px;color:var(--muted);line-height:1.7;}
   .note{font-size:12.5px;color:var(--muted);line-height:1.7;margin-top:10px;}
+  .mic-hint{
+    font-size:12px;line-height:1.6;color:var(--paper);
+    background:rgba(47,191,170,0.08);
+    border-left:3px solid var(--teal-bright);
+    padding:8px 10px;border-radius:6px;
+    margin:2px 0 10px 0;
+  }
   .note b{color:var(--paper);}
   footer{margin-top:26px;font-size:12px;color:var(--muted);text-align:center;line-height:1.8;}
 
@@ -207,6 +214,7 @@
           <span id="micText">麥克風未啟用</span>
         </div>
       </div>
+      <div class="mic-hint" id="micHint"></div>
       <div class="seq-status" id="seqStatus">按「開始」播放示範並開始偵測。</div>
     </div>
     <div class="card">
@@ -1078,6 +1086,7 @@ const I18N = {
     micDenied:'你拒絕了麥克風權限，請到瀏覽器/系統設定重新允許',
     micNotFound:'找不到麥克風裝置', micNoPermission:'無法取得麥克風權限',
     seqDefault:'按「開始」播放示範並開始偵測。',
+    micHint:'🎤 抓不到聲音？請先檢查瀏覽器網址列旁的麥克風權限，確認選到的是正確的輸入裝置（尤其接了藍牙耳機或外接麥克風時，很容易選錯）。',
     seqCountIn:'倒數 4 拍……',
     seqChord:(i,n,roman,part)=>'第 '+i+'/'+n+' 個和弦：'+roman+'　請唱 '+part+'（金色目標）。',
     seqDone:'這條和弦進行唱完了。可以再按「開始」重來一次。',
@@ -1113,6 +1122,7 @@ const I18N = {
     micDenied:'Mic permission denied — please allow it again in your browser/system settings',
     micNotFound:'No microphone found', micNoPermission:'Unable to get microphone permission',
     seqDefault:'Press "Start" to hear the progression and begin pitch detection.',
+    micHint:'🎤 Not picking up any sound? Check your browser\'s microphone permission (the icon in the address bar) and make sure the right input device is selected — this is easy to get wrong if you have Bluetooth headphones or an external mic connected.',
     seqCountIn:'Counting in 4 beats…',
     seqChord:(i,n,roman,part)=>'Chord '+i+'/'+n+': '+roman+' — sing '+part+' (gold target).',
     seqDone:'Progression complete. Press "Start" to go again.',
@@ -1969,6 +1979,7 @@ function applyLang(){
   set('txtReadoutHz', t('readoutHz')); set('txtReadoutCents', t('readoutCents')); set('txtReadoutJudge', t('readoutJudge'));
   document.getElementById('txtChartNote').innerHTML = t('chartNote');
   set('txtFooter1', t('footer1')); set('txtFooter2', t('footer2')); set('txtVersionPrefix', t('versionPrefix'));
+  set('micHint', t('micHint'));
   // dynamic pieces
   renderProgressionList();
   renderKeyHeader();
