@@ -128,9 +128,11 @@
     flex:1;min-width:56px;text-align:center;padding:10px 6px;border-radius:8px;
     background:rgba(255,255,255,0.04);border:1.5px solid rgba(234,242,241,0.12);
     color:var(--muted);font-size:13px;font-weight:700;transition:all .15s ease;
+    cursor:pointer;touch-action:manipulation;
   }
   .chord-pill.current{background:rgba(232,163,61,0.22);border-color:var(--gold);color:#fff;box-shadow:0 0 0 1.5px var(--gold);}
   .chord-pill.done{opacity:.5;}
+  .chord-pill.cell-flash{background:var(--teal-bright)!important;border-color:var(--teal-bright)!important;color:#0d1f1d!important;}
 
   .tempo-row{display:flex;align-items:center;gap:12px;margin-bottom:14px;flex-wrap:wrap;}
   .tempo-row label{font-size:13px;color:var(--muted);font-weight:700;}
@@ -277,8 +279,8 @@ const TONIC_REF_MIDI = 60;
 const PROGRESSIONS = [
   {
     id: '1451',
-    label: '1451（I – IV – V – I）',
-    labelEn: '1451 (I – IV – V – I)',
+    label: 'I – IV – V – I (1-4-5-1)',
+    labelEn: 'I – IV – V – I (1-4-5-1)',
     chordDefs: [
       { roman:'I',  rootSemitone:0, quality:'major' },
       { roman:'IV', rootSemitone:5, quality:'major' },
@@ -315,8 +317,8 @@ const PROGRESSIONS = [
   },
   {
     id: '6415',
-    label: '6415（vi – IV – I – V）',
-    labelEn: '6415 (vi – IV – I – V)',
+    label: 'vi – IV – I – V (6m-4-1-5)',
+    labelEn: 'vi – IV – I – V (6m-4-1-5)',
     chordDefs: [
       { roman:'vi', rootSemitone:9, quality:'minor' },
       { roman:'IV', rootSemitone:5, quality:'major' },
@@ -353,8 +355,8 @@ const PROGRESSIONS = [
   },
   {
     id: '16251',
-    label: '16251（I – vi – ii – V – I）',
-    labelEn: '16251 (I – vi – ii – V – I)',
+    label: 'I – vi – ii – V – I (1-6m-2m-5-1)',
+    labelEn: 'I – vi – ii – V – I (1-6m-2m-5-1)',
     chordDefs: [
       { roman:'I',  rootSemitone:0, quality:'major' },
       { roman:'vi', rootSemitone:9, quality:'minor' },
@@ -396,8 +398,8 @@ const PROGRESSIONS = [
   },
   {
     id: 'threecycle',
-    label: '三度循環（I – vi – IV – ii – vii° – V – iii – I）',
-    labelEn: 'Cycle of Thirds (I – vi – IV – ii – vii° – V – iii – I)',
+    label: '三度循環（I – vi – IV – ii – vii° – V – iii – I）(1-6m-4-2m-7°-5-3m-1)',
+    labelEn: 'Cycle of Thirds (I – vi – IV – ii – vii° – V – iii – I) (1-6m-4-2m-7°-5-3m-1)',
     chordDefs: [
       { roman:'I',    rootSemitone:0,  quality:'major' },
       { roman:'vi',   rootSemitone:9,  quality:'minor' },
@@ -458,7 +460,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-iv-i',
-    label: 'I – IV – I',
+    label: 'I – IV – I (1-4-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'IV', rootSemitone:5, quality:'major' },
@@ -490,7 +492,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-v-i',
-    label: 'I – V – I',
+    label: 'I – V – I (1-5-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'V', rootSemitone:7, quality:'major' },
@@ -522,7 +524,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-v-iv-i',
-    label: 'I – V – IV – I',
+    label: 'I – V – IV – I (1-5-4-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'V', rootSemitone:7, quality:'major' },
@@ -559,7 +561,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-vi-i',
-    label: 'I – vi – I',
+    label: 'I – vi – I (1-6m-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'vi', rootSemitone:9, quality:'minor' },
@@ -591,7 +593,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-iii-iv-i',
-    label: 'I – iii – IV – I',
+    label: 'I – iii – IV – I (1-3m-4-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'iii', rootSemitone:4, quality:'minor' },
@@ -628,8 +630,8 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-iv-v-i-minor',
-    label: 'i – iv – V – i（小調）',
-    labelEn: 'i – iv – V – i (minor)',
+    label: 'i – iv – V – i（小調） (1m-4m-5-1m)',
+    labelEn: 'i – iv – V – i (minor) (1m-4m-5-1m)',
     chordDefs: [
       { roman:'i', rootSemitone:0, quality:'minor' },
       { roman:'iv', rootSemitone:5, quality:'minor' },
@@ -666,7 +668,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-iv-i-v-i',
-    label: 'I – IV – I – V – I',
+    label: 'I – IV – I – V – I (1-4-1-5-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'IV', rootSemitone:5, quality:'major' },
@@ -708,8 +710,8 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-vi-vii-i-minor',
-    label: 'i – VI – VII – i（自然小調）',
-    labelEn: 'i – VI – VII – i (natural minor)',
+    label: 'i – VI – VII – i（自然小調） (1m-6-7-1m)',
+    labelEn: 'i – VI – VII – i (natural minor) (1m-6-7-1m)',
     chordDefs: [
       { roman:'i', rootSemitone:0, quality:'minor' },
       { roman:'VI', rootSemitone:8, quality:'major' },
@@ -746,8 +748,8 @@ const PROGRESSIONS = [
   },
   {
     id: '1451-v7',
-    label: '1451 V7（I – IV – V7 – I）',
-    labelEn: '1451 V7 (I – IV – V7 – I)',
+    label: 'I – IV – V7 – I (1-4-57-1)',
+    labelEn: 'I – IV – V7 – I (1-4-57-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'IV', rootSemitone:5, quality:'major' },
@@ -784,8 +786,8 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-iv-v7-i-minor',
-    label: 'i – iv – V7 – i（小調）',
-    labelEn: 'i – iv – V7 – i (minor)',
+    label: 'i – iv – V7 – i（小調） (1m-4m-57-1m)',
+    labelEn: 'i – iv – V7 – i (minor) (1m-4m-57-1m)',
     chordDefs: [
       { roman:'i', rootSemitone:0, quality:'minor' },
       { roman:'iv', rootSemitone:5, quality:'minor' },
@@ -822,7 +824,7 @@ const PROGRESSIONS = [
   },
   {
     id: 'i-vi7-ii7-v7-i',
-    label: 'I – vi7 – ii7 – V7 – I',
+    label: 'I – vi7 – ii7 – V7 – I (1-6m7-2m7-57-1)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'vi7', rootSemitone:9, quality:'min7' },
@@ -864,8 +866,8 @@ const PROGRESSIONS = [
   },
   {
     id: 'golden-progression',
-    label: '黃金和弦進行（I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V）',
-    labelEn: 'Golden Progression (I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V)',
+    label: '黃金和弦進行（I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V）(1-5(6)-6m-3m(6)7-4-1(6)-2m7-5)',
+    labelEn: 'Golden Progression (I – V6 – vi – iii6(7) – IV – I6 – ii(7) – V) (1-5(6)-6m-3m(6)7-4-1(6)-2m7-5)',
     chordDefs: [
       { roman:'I', rootSemitone:0, quality:'major' },
       { roman:'V6', rootSemitone:7, quality:'major' },
@@ -1073,7 +1075,7 @@ const I18N = {
       '按「▶ 開始」：先倒數 4 拍，之後每個和弦 4 拍，依序唱完整條和弦進行。對準圖上的金色目標線來唱。',
     ],
     howtoTip:'音準說明：每個和弦的根音用十二平均律，三音、五音、七音以純律（純正比例）調音，與十二平均律的音分偏差會標在配置表與圖上。建議戴耳機練習，避免麥克風收到伴奏聲。',
-    chooseProg:'選擇和弦進行', keyHeader:(label)=>'選擇調性 — '+label,
+    chooseProg:'選擇和弦進行', keyHeaderPrefix:'選擇調性 —',
     backProg:'← 換一條和弦進行', backKey:'← 換調', changeProg:'🔀 換和弦進行',
     outOfRange:'超出音域',
 
@@ -1091,7 +1093,7 @@ const I18N = {
     seqChord:(i,n,roman,part)=>'第 '+i+'/'+n+' 個和弦：'+roman+'　請唱 '+part+'（金色目標）。',
     seqDone:'這條和弦進行唱完了。可以再按「開始」重來一次。',
     showTable:'📋 顯示全曲配置表', hideTable:'📋 隱藏全曲配置表',
-    tableNote:'格內：唱名（大字）與音名。右上角：該音是和弦的第幾音（1 根音、3 三音、5 五音、6 六音、7 七音），下方是與十二平均律的音分偏差。點任何一格可以聽該音；點最上面一列的羅馬數字可以聽整個和弦。',
+    tableNote:'格內：唱名（大字）與音名。右上角：該音是和弦的第幾音（1 根音、3 三音、5 五音、6 六音、7 七音），下方是與十二平均律的音分偏差。按住任一格不放可以聽該音，放開才停；按住最上面一列的羅馬數字可以聽整個和弦。',
     readoutHz:'目前音高', readoutCents:'與目標偏差', readoutJudge:'判定',
     judgeSilent:'靜音', judgeOk:'✓ 準確', judgeHigh:'偏高', judgeLow:'偏低',
     chartNote:'粗橫線＝各聲部音高（階梯狀隨和弦移動），<b>金色</b>是你要唱的目標聲部。你的即時音高軌跡落在目標 ±6 音分內顯示<b>綠色</b>，超出則<b>紅色</b>。',
@@ -1109,7 +1111,7 @@ const I18N = {
       'Press "▶ Start": a 4-beat count-in, then 4 beats per chord through the whole progression. Line up with the gold target line on the chart.',
     ],
     howtoTip:'About the tuning: each chord\'s root is equal-tempered, while its third, fifth and seventh are tuned in just intonation. The offset from equal temperament is shown in the voicing table and on the chart. Headphones are recommended so the microphone doesn\'t pick up the accompaniment.',
-    chooseProg:'Choose a Progression', keyHeader:(label)=>'Choose a Key — '+label,
+    chooseProg:'Choose a Progression', keyHeaderPrefix:'Choose a Key —',
     backProg:'← Change Progression', backKey:'← Change Key', changeProg:'🔀 Change Progression',
     outOfRange:'Out of range',
 
@@ -1127,7 +1129,7 @@ const I18N = {
     seqChord:(i,n,roman,part)=>'Chord '+i+'/'+n+': '+roman+' — sing '+part+' (gold target).',
     seqDone:'Progression complete. Press "Start" to go again.',
     showTable:'📋 Show Voicing Table', hideTable:'📋 Hide Voicing Table',
-    tableNote:'In each cell: solfège syllable (large) and note name. Top right: which chord tone it is (1 root, 3 third, 5 fifth, 6 sixth, 7 seventh) and, below it, the offset from equal temperament in cents. Tap any cell to hear that note; tap a roman numeral in the top row to hear the whole chord.',
+    tableNote:'In each cell: solfège syllable (large) and note name. Top right: which chord tone it is (1 root, 3 third, 5 fifth, 6 sixth, 7 seventh) and, below it, the offset from equal temperament in cents. Press and hold any cell to hear that note for as long as you hold it; press and hold a roman numeral in the top row to hear the whole chord.',
     readoutHz:'Current Pitch', readoutCents:'Offset from Target', readoutJudge:'Judgement',
     judgeSilent:'Silent', judgeOk:'✓ In tune', judgeHigh:'Sharp', judgeLow:'Flat',
     chartNote:'Thick lines = each voice\'s pitch (stepping with the chords); <b>gold</b> is the part you sing. Your live pitch trace is <b>green</b> within ±6 cents of the target and <b>red</b> outside it.',
@@ -1189,7 +1191,7 @@ function selectProgression(p){
 }
 function renderKeyHeader(){
   if(!state.progression) return;
-  document.getElementById('keyHeader').textContent = t('keyHeader')(progLabel(state.progression));
+  document.getElementById('keyHeader').innerHTML = t('keyHeaderPrefix')+' <span style="text-transform:none;">'+progLabel(state.progression)+'</span>';
 }
 function renderKeyGrid(){
   const wrap = document.getElementById('keyGrid');
@@ -1307,57 +1309,76 @@ function renderConfigTable(){
 // don't reliably fire 'click' on custom elements, but pointerdown fires on the
 // very first touch/mouse contact and is broadly supported, so the flash is instant either way.
 (function(){
-  const wrap = document.getElementById('configTableWrap');
-  if(!wrap) return;
-  let lastFireAt = 0;
-  wrap.addEventListener('pointerdown', async (e)=>{
+  const containers = [document.getElementById('configTableWrap'), document.getElementById('progressRow')].filter(Boolean);
+  if(!containers.length) return;
+  let held = null; // { tones:[{tone,...}], flashEl, ctx }
+
+  function releaseHeld(){
+    if(!held) return;
+    const { tones, flashEl, ctx } = held;
+    const tNow = ctx.currentTime + 0.01;
+    tones.forEach(tone => fadeStop(tone, ctx, tNow));
+    if(flashEl) flashEl.classList.remove('cell-flash');
+    held = null;
+  }
+
+  function findTarget(e){
     const headerCell = e.target.closest('.tappable-header');
     const cell = e.target.closest('.tappable-cell');
-    if(!headerCell && !cell) return;
-    if(!state.progression) return;
-    const now = Date.now();
-    if(now - lastFireAt < 150) return; // guard against double-fire if a browser also sends a click right after
-    lastFireAt = now;
-    // explicit JS-driven flash — more reliable than relying on :active on mobile touch,
-    // and gives feedback even when audio itself doesn't play (e.g. no sound output/permission issue)
-    const flashTarget = headerCell || cell;
-    flashTarget.classList.add('cell-flash');
-    setTimeout(()=>flashTarget.classList.remove('cell-flash'), 1000);
-    const chords = getResolvedChords(state.progression, state.tonicOffset);
-    const ctx = await ensureAudioCtx();
-    if(headerCell){
-      // play every voice of this chord together — a quick way to hear the whole sonority
-      // for any column, not just the one currently playing in the practice sequence.
-      const idx = parseInt(headerCell.dataset.idx,10);
+    const pill = e.target.closest('.chord-pill');
+    return headerCell || cell || pill;
+  }
+
+  containers.forEach(wrap=>{
+    wrap.addEventListener('pointerdown', async (e)=>{
+      const target = findTarget(e);
+      if(!target || !state.progression) return;
+      e.preventDefault();
+      releaseHeld(); // in case a previous press wasn't released cleanly (e.g. a stray pointerup was missed)
+      target.classList.add('cell-flash');
+      const chords = getResolvedChords(state.progression, state.tonicOffset);
+      const ctx = await ensureAudioCtx();
+      const tNow = ctx.currentTime + 0.02;
+      const tones = [];
+
+      const idx = parseInt(target.dataset.idx, 10);
       const chord = chords[idx];
-      const tNow = ctx.currentTime+0.02;
-      VOICE_ORDER.forEach(part=>{
+      const isSingleCell = target.classList.contains('tappable-cell');
+
+      if(isSingleCell){
+        const part = target.dataset.part;
         const vp = chord.voicing[part];
-        if(!vp) return;
+        if(!vp){ target.classList.remove('cell-flash'); return; }
         const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
         const tone = makeTone(ctx, freq);
         const peak = part===state.targetPart?0.26:0.18;
         tone.gain.gain.setValueAtTime(0, tNow);
         tone.gain.gain.linearRampToValueAtTime(peak, tNow+0.03);
-        tone.gain.gain.setValueAtTime(peak, tNow+0.85);
-        tone.gain.gain.linearRampToValueAtTime(0, tNow+1.0);
-        stopTone(tone, tNow+1.05);
-      });
-      return;
-    }
-    const part = cell.dataset.part;
-    const idx = parseInt(cell.dataset.idx,10);
-    const chord = chords[idx];
-    const vp = chord.voicing[part];
-    if(!vp) return;
-    const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
-    const tNow = ctx.currentTime+0.02;
-    const tone = makeTone(ctx, freq);
-    tone.gain.gain.setValueAtTime(0, tNow);
-    tone.gain.gain.linearRampToValueAtTime(part===state.targetPart?0.26:0.18, tNow+0.03);
-    tone.gain.gain.setValueAtTime(part===state.targetPart?0.26:0.18, tNow+0.85);
-    tone.gain.gain.linearRampToValueAtTime(0, tNow+1.0);
-    stopTone(tone, tNow+1.05);
+        tones.push(tone);
+      } else {
+        // whole-chord targets: config-table roman-numeral header, or a progress-row chord pill
+        VOICE_ORDER.forEach(part=>{
+          const vp = chord.voicing[part];
+          if(!vp) return;
+          const freq = noteFreqForVoicing(state.tonicOffset, chord.rootSemitone, chord.quality, vp.func, vp.oct);
+          const tone = makeTone(ctx, freq);
+          const peak = part===state.targetPart?0.26:0.18;
+          tone.gain.gain.setValueAtTime(0, tNow);
+          tone.gain.gain.linearRampToValueAtTime(peak, tNow+0.03);
+          tones.push(tone);
+        });
+      }
+      if(!tones.length) return;
+      // held indefinitely at peak — no scheduled release here; releaseHeld() fades it out
+      // on pointerup/cancel/leave, so how long it sounds is entirely up to how long you hold.
+      held = { tones, flashEl: target, ctx };
+    });
+  });
+
+  // Listen globally, not just on the container, so releasing after dragging off the
+  // element (or off the screen entirely) still stops the sound and clears the flash.
+  ['pointerup','pointercancel','pointerleave'].forEach(evt=>{
+    window.addEventListener(evt, releaseHeld);
   });
 })();
 function renderVoiceToggleRow(){
@@ -1420,6 +1441,7 @@ function renderProgressRow(){
     const pill = document.createElement('div');
     pill.className = 'chord-pill'+(i===state.chordIndex?' current':(i<state.chordIndex?' done':''));
     pill.textContent = c.roman;
+    pill.dataset.idx = i;
     wrap.appendChild(pill);
   });
   const big = document.getElementById('currentChordBig');
